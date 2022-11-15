@@ -6,11 +6,80 @@ Unfortunetly it can't check who has won, at least for now.
 */
 
 #include <iostream>
+#include <string>
 #include <ctime>
-#include <iomanip>
 
 using namespace std;
 
+//Display the board
+void displayBoard() {
+	
+}
+
+//Player one
+void player1Step() {
+
+}
+
+//player two 
+void player2Step() {
+
+}
+
+//AI
+void playerAIStep() {
+
+}
+
+//Win Check
+void gameWon() {
+
+}
+
+int main() {
+
+	setlocale(LC_ALL, "");
+
+	char gamemode;
+	bool gameEnd = false;
+
+	do {
+		cout << "Single or Multi player? \t [S/M]" << gamemode << endl;
+		cin >> gamemode;
+		gamemode = toupper(gamemode);
+
+		switch (gamemode) {
+			case 'S':
+				gamemode = 'S';
+				break;
+			case 'M':
+				gamemode = 'M';
+				break;
+			default:
+				gamemode = 'F';
+		}
+
+	} while (gamemode == 'F');
+
+	while (gamemode == 'S' and gameEnd == false) {
+		displayBoard();
+		player1Step();
+		playerAIStep();
+		gameWon();
+	}
+
+	while (gamemode == 'M' and gameEnd == false) {
+		displayBoard();
+		player1Step();
+		player2Step();
+		gameWon();
+	}
+
+	return 0;
+}
+
+//time for a cleanup - leaving this stuff for now
+/*
 int main() {
 	int i, rows, columns, x, temp_y, player_turn, ai_x, ai_y;
 	char restart, y, player_char, ai_char;
@@ -146,3 +215,5 @@ int main() {
 	} while (restart == 'Y');
 	return 0;
 }
+*/
+

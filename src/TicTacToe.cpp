@@ -11,23 +11,62 @@ Unfortunetly it can't check who has won, at least for now.
 
 using namespace std;
 
+bool valid_choice;
+char board[3][3] = {{'1','2','3'},{'4','5','6'},{'7','8','9'}};
+int choice, row, column, turn = 1;
+
 //Display the board
 void displayBoard() {
-	
+	cout << "\t  " << board[0][0] << " | " << board[0][1] << " | " << board[0][2] << endl;
+	cout << "\t ---|---|---" << endl;
+	cout << "\t  " << board[1][0] << " | " << board[1][1] << " | " << board[1][2] << endl;
+	cout << "\t ---|---|---" << endl;
+	cout << "\t  " << board[2][0] << " | " << board[2][1] << " | " << board[2][2] << endl;
 }
 
 //Player one
-void player1Step() {
+void playerVSplayer() {
+	cout << "Player: " << turn << " Choose a cell: " << endl;
+	cin >> choice;
+	cin.clear(); cin.ignore();
 
-}
+	switch(choice) {
+		case 1: row = 0; column = 0; break;
+		case 2: row = 0; column = 1; break;
+		case 3: row = 0; column = 2; break;
+		case 4: row = 1; column = 0; break;
+		case 5: row = 1; column = 1; break;
+		case 6: row = 1; column = 2; break;
+		case 7: row = 2; column = 0; break;
+		case 8: row = 2; column = 1; break;
+		case 9: row = 2; column = 2; break;
+		default:
+			cout << "Invalid cell! Please try again" << endl;
+	};
 
-//player two 
-void player2Step() {
-
-}
-
-//AI
-void playerAIStep() {
+	if(turn == 1 ) {
+		//player one
+		if(board[row][column] != 'X' and board[row][column] != 'O')
+		{
+			board[row][column] = 'X';
+			turn = 2;
+		} else {
+				cout << "Cell " << board[row][column] << " already occupied \nPlease try again!" << endl; 
+				//cout << "Player ONE debug" << endl;
+				turn = 1;
+		}
+	} else {
+		//player two
+		if(board[row][column] != 'X' and board[row][column] != 'O')
+		{
+			board[row][column] = 'O';
+			turn = 1;
+		} else {
+				cout << "Cell " << board[row][column] << " already occupied \nPlease try again!" << endl; 
+				//cout << "Player TWO debug" << endl;
+				turn = 2;
+		}
+	}
 
 }
 
@@ -40,38 +79,11 @@ int main() {
 
 	setlocale(LC_ALL, "");
 
-	char gamemode;
 	bool gameEnd = false;
 
-	do {
-		cout << "Single or Multi player? \t [S/M]" << gamemode << endl;
-		cin >> gamemode;
-		gamemode = toupper(gamemode);
-
-		switch (gamemode) {
-			case 'S':
-				gamemode = 'S';
-				break;
-			case 'M':
-				gamemode = 'M';
-				break;
-			default:
-				gamemode = 'F';
-		}
-
-	} while (gamemode == 'F');
-
-	while (gamemode == 'S' and gameEnd == false) {
+	while (gameEnd == false) {
 		displayBoard();
-		player1Step();
-		playerAIStep();
-		gameWon();
-	}
-
-	while (gamemode == 'M' and gameEnd == false) {
-		displayBoard();
-		player1Step();
-		player2Step();
+		playerVSplayer();
 		gameWon();
 	}
 

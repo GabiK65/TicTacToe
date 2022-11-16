@@ -13,7 +13,7 @@ using namespace std;
 
 bool valid_choice;
 char board[3][3] = {{'1','2','3'},{'4','5','6'},{'7','8','9'}};
-int choice, row, column, turn = 1;
+int i, j, choice, row, column, turn = 1, gameState;
 
 //Display the board
 void displayBoard() {
@@ -71,20 +71,41 @@ void playerVSplayer() {
 }
 
 //Win Check
-void gameWon() {
+//1 - still in game
+//2 - somebody won the game
+//3 - draw
+int inGame() {
+	//check for win
+	for(i = 0; i < 3; i++) {
+		//check for rows and columns
+		if ((board[i][0] == board[i][1] and board[i][0] == board[i][2]) or (board[0][i] == board[1][i] and board[0][i] == board[2][i])) {
+			//cout << "Game Over!" << endl;
+			//cout << "debug.gameWon.1" << endl;
+			return 2;
+		}
+		//check for diagonal
+		if ((board[0][0] == board[1][1] and board[0][0] == board[2][2]) or (board[0][2] == board[1][1] and board[0][2] == board[2][0])) {
+			//cout << "Game Over!" << endl;
+			//cout << "debug.gameWon.2" << endl;
+			return 2;
+		}
+	}
 
+	return 1;
 }
 
 int main() {
 
 	setlocale(LC_ALL, "");
 
-	bool gameEnd = false;
-
-	while (gameEnd == false) {
+	while (inGame() == 1) {
 		displayBoard();
 		playerVSplayer();
-		gameWon();
+		inGame();
+	}
+
+	if (inGame() == 2) {
+		cout << "Game Over!" << endl;
 	}
 
 	return 0;

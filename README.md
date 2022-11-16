@@ -1,22 +1,25 @@
-My first try at making a Tic-tac-toe game in C++
+# A simple game of Tic-Tac-Toe 
+#### Version:0.2.0</sub>
 
-It has "AI" that will place an X or O on a random cell if it's empty
+---
+## ToDo:
+- Add "play again" option
+- Add "character" selection
+- Add "AI" for singleplayer mode
+- Make "AI" decide the best next step
+- Add game difficulty
+- Add a nice gui that can be used with different input devices (keyboard, mouse, gamepad)
+- Add online multiplayer mode
 
-It has also "Character" selection.
+## How to build and run:
 
-Unfortunetly it can't check who has won, at least for now.
-
-
-## Installing required dependencies:
-
+### Installing required dependencies:
 - Debian and Ubuntu based systems:
 ```sudo apt update && sudo apt install build-essential cmake``` 
 - ArchLinux and other Arch based systems:
 ```sudo pacman -Syu base-devel cmake```
 
-
-## How to build and run:
-
+### Building and running the game
 ```
 git clone https://github.com/GabiK65/TicTacToe.git
 

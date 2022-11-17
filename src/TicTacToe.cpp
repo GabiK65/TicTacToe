@@ -1,19 +1,13 @@
-/*
-My first try at making a Tic-tac-toe
-It has "AI" that will place an X or O on a random cell if it's empty
-It has also "Character" selection.
-Unfortunetly it can't check who has won, at least for now.
-*/
-
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <ctime>
+#include <clocale>
 
 using namespace std;
 
 bool draw;
 char board[3][3] = {{'1','2','3'},{'4','5','6'},{'7','8','9'}};
-int i, j, choice, row, column, turn = 1;
+int i, j, choice, row, column, turn = 1, gamemode = 0;
 
 //Display the board
 void displayBoard() {
@@ -28,7 +22,15 @@ void displayBoard() {
 void playerVSplayer() {
 	cout << "Player: " << turn << " Choose a cell: " << endl;
 	cin >> choice;
-	cin.clear(); cin.ignore();
+
+	if (cin.fail()){
+			cout << "Thats not a number!\nPlease try again!" << endl;
+			// clear error state
+			cin.clear();
+			// discard 'bad' character(s)
+			cin.ignore(1000, '\n');
+	}
+
 
 	switch(choice) {
 		case 1: row = 0; column = 0; break;
@@ -41,7 +43,7 @@ void playerVSplayer() {
 		case 8: row = 2; column = 1; break;
 		case 9: row = 2; column = 2; break;
 		default:
-			cout << "Invalid cell! Please try again" << endl;
+			cout << "Invalid cell!\nPlease try again" << endl;
 	};
 
 	if(turn == 1 ) {
@@ -76,14 +78,10 @@ bool inGame() {
 	for(i = 0; i < 3; i++) {
 		//check for rows and columns
 		if ((board[i][0] == board[i][1] and board[i][0] == board[i][2]) or (board[0][i] == board[1][i] and board[0][i] == board[2][i])) {
-			//cout << "Game Over!" << endl;
-			//cout << "debug.gameWon.1" << endl;
 			return false;
 		}
 		//check for diagonal
 		if ((board[0][0] == board[1][1] and board[0][0] == board[2][2]) or (board[0][2] == board[1][1] and board[0][2] == board[2][0])) {
-			//cout << "Game Over!" << endl;
-			//cout << "debug.gameWon.2" << endl;
 			return false;
 		}
 	}
@@ -103,12 +101,25 @@ int main() {
 
 	setlocale(LC_ALL, "");
 
-	while (inGame() == true) {
-		displayBoard();
-		playerVSplayer();
-		inGame();
+	while (gamemode == 0) {
+		cout << "Select a gamemode: \n\t1 - Singleplayer against AI \n\t2 - Multiplayer against another person" << endl;
+		cin >> gamemode;
+		if (cin.fail()){
+			cout << "Please try again!" << endl;
+			// clear error state
+			cin.clear();
+			// discard 'bad' character(s)
+			cin.ignore(1000, '\n');
+		}
 	}
 
+	while (inGame() == true) {
+		displayBoard();
+		if(gamemode == 1) {cout << "SinglePlayer" << endl;} else if(gamemode == 2) {playerVSplayer();}
+		
+		inGame();
+	}
+	
 	if (turn == 2 and draw == false) {
 		cout << "Game Over! \n\t Player 1 won!" << endl;
 	} else if (turn == 1 and draw == false) {

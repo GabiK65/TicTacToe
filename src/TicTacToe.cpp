@@ -6,8 +6,20 @@
 using namespace std;
 
 bool draw, game_exit = false;
-char board[3][3] = {{'1','2','3'},{'4','5','6'},{'7','8','9'}}, play_again;
+char board[3][3] = {{'1','2','3'},{'4','5','6'},{'7','8','9'}}, play_again, player1, player2;
 int i, j, choice, row, column, turn = 1, gamemode = 0, temp_int;
+
+void characterChoice() {
+	cout << "Choose a character to play as [A-Z]" << endl;
+	do {
+		cout << "Player one: ";
+		cin >> player1;
+	} while (player1 < 'A' or player1 > 'Z');
+	do {
+		cout << "Player two: ";
+		cin >> player2;
+	} while ((player2 < 'A' or player2 > 'Z') or player1 == player2);
+}
 
 void displayBoard() {
 	cout << "\t  " << board[0][0] << " | " << board[0][1] << " | " << board[0][2] << endl;
@@ -50,23 +62,23 @@ void playerVSplayer() {
 
 	if(turn == 1 ) {
 		//player one
-		if(board[row][column] != 'X' and board[row][column] != 'O')
+		if(board[row][column] != player1 and board[row][column] != player2)
 		{
-			board[row][column] = 'X';
+			board[row][column] = player1;
 			displayBoard();
 			turn = 2;
-		} else if (board[row][column] == 'X' or board[row][column] == 'O') {
+		} else if (board[row][column] == player1 or board[row][column] == player2) {
 				cout << "Cell " << board[row][column] << " already occupied \nPlease try again!" << endl; 
 				turn = 1;
 		}
 	} else if(turn == 2 ) {
 		//player two
-		if(board[row][column] != 'X' and board[row][column] != 'O')
+		if(board[row][column] != player1 and board[row][column] != player2)
 		{
-			board[row][column] = 'O';
+			board[row][column] = player2;
 			displayBoard();
 			turn = 1;
-		} else if (board[row][column] == 'X' or board[row][column] == 'O') {
+		} else if (board[row][column] == player1 or board[row][column] == player2) {
 				cout << "Cell " << board[row][column] << " already occupied \nPlease try again!" << endl; 
 				turn = 2;
 		}
@@ -80,12 +92,12 @@ void playerVSAI() {
 	if(turn == 1 ) {
 		playerChoice();
 
-		if(board[row][column] != 'X' and board[row][column] != 'O')
+		if(board[row][column] != player1 and board[row][column] != player2)
 		{
-			board[row][column] = 'X';
+			board[row][column] = player1;
 			displayBoard();
 			turn = 2;
-		} else if (board[row][column] == 'X' or board[row][column] == 'O') {
+		} else if (board[row][column] == player1 or board[row][column] == player2) {
 				cout << "Cell " << board[row][column] << " already occupied \nPlease try again!" << endl;
 				turn = 1;
 		}
@@ -93,12 +105,12 @@ void playerVSAI() {
 	} else if(turn == 2 ) {
 		row = rand() % 3; column = rand() % 3;
 		
-		if(board[row][column] != 'X' and board[row][column] != 'O')
+		if(board[row][column] != player1 and board[row][column] != player2)
 		{
-			board[row][column] = 'O';
+			board[row][column] = player2;
 			displayBoard();
 			turn = 1;
-		} else if (board[row][column] == 'X' or board[row][column] == 'O') {
+		} else if (board[row][column] == player1 or board[row][column] == player2) {
 			turn = 2;
 		}
 	}
@@ -119,7 +131,7 @@ bool inGame() {
 
     for (int i=0; i<3; i++) {
     	for(int j=0; j<3; j++){
-    		if(board[i][j] != 'X' && board[i][j] != 'O')
+    		if(board[i][j] != player1 && board[i][j] != player2)
    		return true;
 		}
 	}
@@ -143,7 +155,7 @@ int main() {
 				// discard 'bad' character(s)
 				cin.ignore(1000, '\n');
 			}
-			if (gamemode < 1 or gamemode > 2) {gamemode = 0;} else if (gamemode >= 1 and gamemode <= 2) {displayBoard();}
+			if (gamemode < 1 or gamemode > 2) {gamemode = 0;} else if (gamemode >= 1 and gamemode <= 2) {characterChoice();displayBoard();}
 		}
 
 		while (inGame() == true) {

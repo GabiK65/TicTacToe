@@ -1,14 +1,15 @@
 # A simple game of Tic-Tac-Toe 
-#### Version:0.3.0
+#### Version:0.4.0
 
 ---
 ## ToDo:
 - ✅ ~~Add "play again" option~~ 
-- 🚧 Add "character" selection (version 0.4.0)
+- ✅ ~~Add "character" selection~~
 - ✅ ~~Add "AI" for singleplayer mode~~
 - Make "AI" decide the best next step
 - Add game difficulty
-- Add a nice gui that can be used with different input devices (keyboard, mouse, gamepad)
+- 🚧 Add a nice gui (version 0.5.0)
+- 🚧 Support for input devices (keyboard, mouse, gamepad) (version 0.5.0)
 - Add online multiplayer mode
 
 ## How to build and run:

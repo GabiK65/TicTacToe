@@ -1,5 +1,2 @@
-CMake*
-cmake*
-Makefile
-!CMakeLists.txt
+.git
 build

@@ -5,7 +5,7 @@ tictactoe_sources = [
 tictactoe_deps = [
 ]
 
-executable('tictactoe', tictactoe_sources,
+executable('TicTacToe', tictactoe_sources,
   dependencies: tictactoe_deps,
   install: true,
 )

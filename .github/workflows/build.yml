@@ -1,16 +1,20 @@
 name: Meson Build
-
-on: [push]
-
+on:
+  push:
+    branches: [ master ]
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: 3.x
-    - run: python3 -m pip install meson ninja
-    - run: meson builddir
-    - run: ninja -C builddir
+      - uses: actions/checkout@v2
+      - uses: mesonbuild/meson-github-actions@v1
+        with:
+          meson-version: 0.55.0
+          buildtype: release
+          prefix: /usr/local
+          bindir: /usr/local/bin
+- name: Upload build artifacts
+  uses: actions/upload-artifact@v1
+  with:
+    name: meson-build
+    path: build

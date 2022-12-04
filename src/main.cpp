@@ -46,7 +46,6 @@ void playerChoice() {
 	    cout << "Player: " << turn << " Choose a cell: " << endl;
 	    cin >> choice;
 
-
 	    if (cin.fail()){
 			    cout << "Thats not a number!\nPlease try again!" << endl;
 			    // clear error state
@@ -58,63 +57,62 @@ void playerChoice() {
     choice --;
 }
 
-void playerVSplayer() {
-	playerChoice();
-
-	if(turn == 1 ) {
-		//player one
-		if(board[choice] != player1 and board[choice] != player2)
-		{
-			board[choice] = player1;
-			displayBoard();
-			turn = 2;
-		} else if (board[choice] == player1 or board[choice] == player2) {
-				cout << "Cell " << board[choice] << " already occupied \nPlease try again!" << endl;
-				turn = 1;
-		}
-	} else if(turn == 2 ) {
-		//player two
-		if(board[choice] != player1 and board[choice] != player2)
-		{
-			board[choice] = player2;
-			displayBoard();
-			turn = 1;
-		} else if (board[choice] == player1 or board[choice] == player2) {
-				cout << "Cell " << board[choice] << " already occupied \nPlease try again!" << endl;
-				turn = 2;
-		}
-	}
-
+void aiChoice() {
+    choice = rand() % 9;
 }
 
-//PlayerVSAI
-void playerVSAI() {
-	//player one
-	if(turn == 1 ) {
-		playerChoice();
-
-		if(board[choice] != player1 and board[choice] != player2)
-		{
-			board[choice] = player1;
-			displayBoard();
-			turn = 2;
-		} else if (board[choice] == player1 or board[choice] == player2) {
-				cout << "Cell " << board[choice] << " already occupied \nPlease try again!" << endl;
+void game() {
+    // singleplayer aka.: human vs ai
+    if (gamemode == 1) {
+        if (turn == 1) {
+            // player 1
+            playerChoice();
+    		if (board[choice] != player1 and board[choice] != player2) {
+			    board[choice] = player1;
+			    displayBoard();
+			    turn = 2;
+		    } else if (board[choice] == player1 or board[choice] == player2) {
+				cout << "Cell " << choice + 1 << " already occupied \nPlease try again!" << endl;
 				turn = 1;
-		}
-	//"AI"
-	} else if(turn == 2 ) {
-		choice = rand() % 9;
-		
-		if(board[choice] != player1 and board[choice] != player2)
-		{
-			board[choice] = player2;
-			displayBoard();
-			turn = 1;
-		} else if (board[choice] == player1 or board[choice] == player2) {
-			turn = 2;
-		}
-	}
+		    }
+        } else if (turn == 2) {
+            // ai player
+            aiChoice();
+    		if (board[choice] != player1 and board[choice] != player2) {
+			    board[choice] = player2;
+			    displayBoard();
+			    turn = 1;
+		    } else if (board[choice] == player1 or board[choice] == player2) {
+				turn = 2;
+		    }
+        }
+    }
+    // local multiplayer aka.: human vs human on the same pc
+    if (gamemode == 2) {
+        if (turn == 1) {
+            // player 1
+            playerChoice();
+    		if (board[choice] != player1 and board[choice] != player2) {
+			    board[choice] = player1;
+			    displayBoard();
+			    turn = 2;
+		    } else if (board[choice] == player1 or board[choice] == player2) {
+				cout << "Cell " << choice + 1 << " already occupied \nPlease try again!" << endl;
+				turn = 1;
+		    }
+        } else if (turn == 2) {
+            // player 2e
+            playerChoice();
+    		if (board[choice] != player1 and board[choice] != player2) {
+			    board[choice] = player2;
+			    displayBoard();
+			    turn = 1;
+		    } else if (board[choice] == player1 or board[choice] == player2) {
+				cout << "Cell " << choice + 1 << " already occupied \nPlease try again!" << endl;
+				turn = 2;
+		    }
+        }
+    }
 }
 
 bool checkWin() {
@@ -160,62 +158,64 @@ int main() {
     // initialize board
 	for (i = 0; i < BOARD_SIZE; i++){board[i] = static_cast<char>(i + 49);}
 
-	while (!game_over) {
-		while (gamemode == 0) {
-			cout << "Select a gamemode: \n\t1 - Singleplayer against AI \n\t2 - Multiplayer against another person" << endl;
-			cin >> gamemode;
-			if (cin.fail()){
-				cout << "Please try again!" << endl;
-				// clear error state
-				cin.clear();
-				// discard 'bad' character(s)
-				cin.ignore(1000, '\n');
-			}
-			if (gamemode < 1 or gamemode > 2) {
-		        gamemode = 0;
-	        } else if (gamemode >= 1 and gamemode <= 2) {
-			characterChoice();
-			displayBoard();
-			}
-		}
+    for(;;) {
+	    while (!game_over) {
+		    while (gamemode == 0) {
+			    cout << "Select a gamemode: \n\t1 - Singleplayer against AI \n\t2 - Multiplayer against another person" << endl;
+			    cin >> gamemode;
+			    if (cin.fail()){
+				    cout << "Please try again!" << endl;
+				    // clear error state
+				    cin.clear();
+				    // discard 'bad' character(s)
+				    cin.ignore(1000, '\n');
+			    }
+			    if (gamemode < 1 or gamemode > 2) {
+		            gamemode = 0;
+	            } else if (gamemode >= 1 and gamemode <= 2) {
+			    characterChoice();
+			    displayBoard();
+			    }
+		    }
 
-		while (!checkWin()) {
-			if (gamemode == 1) {playerVSAI();} else if (gamemode == 2) {playerVSplayer();}
-			checkWin();
-			checkDraw();
-		}
-		
+		    while (!checkWin()) {
+			    game();
+			    checkWin();
+			    checkDraw();
+		    }
 
-		if (turn == 2 and checkWin() and !checkDraw()) {
-			cout << "Game Over! \n\t Player 1 won!" << endl;
-			game_over = true;
-		} else if (turn == 1 and checkWin() and !checkDraw()) {
-			cout << "Game Over! \n\t Player 2 won!" << endl;
-			game_over = true;
-		} else if (checkDraw()) {
-		    cout << "Game Over! \n\t It's a draw!" << endl;
-		    game_over = true;
-		}
 
-	    do {
-	        cout << "Do you want to play again? (Y/N)" << endl;
-		    cin >> play_again;
+		    if (turn == 2 and checkWin() and !checkDraw()) {
+			    cout << "Game Over! \n\t Player 1 won!" << endl;
+			    game_over = true;
+		    } else if (turn == 1 and checkWin() and !checkDraw()) {
+			    cout << "Game Over! \n\t Player 2 won!" << endl;
+			    game_over = true;
+		    } else if (checkDraw()) {
+		        cout << "Game Over! \n\t It's a draw!" << endl;
+		        game_over = true;
+		    }
+        }
+
+       do {
+            cout << "Do you want to play again? (Y/N)" << endl;
+            cin >> play_again;
 
             if(islower(play_again)) {
                 play_again = toupper(play_again);
             }
 
-		    if (play_again == 'Y') {
-		        // start the game again
-			    // reset essential variables
-			    gamemode = 0; game_over = false; turn = 1;
-			    // reset board
-			    for (i = 0; i < BOARD_SIZE; i++){board[i] = static_cast<char>(i + 49);}
-		    } else if (play_again == 'N') {
+            if (play_again == 'Y') {
+                // start the game again
+	            // reset essential variables
+	            gamemode = 0; game_over = false; turn = 1;
+	            // reset board
+	            for (i = 0; i < BOARD_SIZE; i++){board[i] = static_cast<char>(i + 49);}
+            } else if (play_again == 'N') {
                 cout << "Thank you for playing!" << endl;
                 return 0;
             }
-        } while (gamemode != 0);
+        } while (gamemode != 0 and game_over);
     }
     return 0;
 }

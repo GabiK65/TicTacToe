@@ -22,7 +22,7 @@ pip3 install --user meson
 
 ### Building and running the game
 ```
-git clone https://github.com/GabiK65/TicTacToe.git
+git clone https://codeberg.org/GabiK65/TicTacToe.git
 
 cd ./TicTacToe
 
